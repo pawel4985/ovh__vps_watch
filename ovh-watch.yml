@@ -1,0 +1,41 @@
+name: OVH VPS watch
+
+# Uruchamiany z zewnątrz (cron-job.org) przez API. Celowo bez "schedule":
+# wbudowany harmonogram GitHuba potrafi spóźniać się o godziny, a workflowy
+# ze "schedule" są wyłączane po 60 dniach bez aktywności w repozytorium.
+on:
+  workflow_dispatch:
+
+# Nigdy dwa sprawdzenia naraz (żeby nie pokłóciły się o plik stanu).
+concurrency:
+  group: ovh-watch
+  cancel-in-progress: false
+
+permissions:
+  contents: write  # zapis pliku ovh_vps_state.json w repozytorium
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Sprawdź dostępność VPS
+        env:
+          SMTP_HOST: smtp.gmail.com
+          SMTP_PORT: "465"
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          MAIL_TO: ${{ secrets.MAIL_TO }}
+        run: python3 ovh_vps_watch.py
+
+      - name: Zapisz stan w repozytorium
+        run: |
+          [ -f ovh_vps_state.json ] || exit 0
+          git add ovh_vps_state.json
+          git diff --cached --quiet && exit 0
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Stan dostępności VPS"
+          git push
