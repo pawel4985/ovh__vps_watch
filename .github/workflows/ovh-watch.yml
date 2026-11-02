@@ -23,7 +23,7 @@ jobs:
 
       - name: Sprawdź dostępność VPS
         env:
-          SMTP_HOST: smtp.gmail.com
+          SMTP_HOST: smtp.wp.pl
           SMTP_PORT: "465"
           SMTP_USER: ${{ secrets.SMTP_USER }}
           SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
