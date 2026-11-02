@@ -60,10 +60,10 @@ FALLBACK_OS = env("OVH_OS", "Ubuntu 26.04")
 # tylko z Windowsem wyglądałby na dostępny - dlatego domyślnie "linux".
 OS_TYPE = env("OVH_OS_TYPE", "linux")
 
-SMTP_HOST = env("SMTP_HOST", "smtp.gmail.com")
+SMTP_HOST = env("SMTP_HOST", "smtp.wp.pl")
 SMTP_PORT = int(env("SMTP_PORT", "465"))  # 465 = SSL, 587 = STARTTLS
-SMTP_USER = env("SMTP_USER", "twoj.adres@gmail.com")
-SMTP_PASSWORD = env("SMTP_PASSWORD", "")  # Gmail: hasło aplikacji
+SMTP_USER = env("SMTP_USER", "twoj.adres@wp.pl")
+SMTP_PASSWORD = env("SMTP_PASSWORD", "")  # hasło do poczty (lub hasło do programów pocztowych)
 MAIL_FROM = env("MAIL_FROM", SMTP_USER)
 MAIL_TO = env("MAIL_TO", SMTP_USER)  # kilka adresów po przecinku
 
