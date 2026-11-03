@@ -3,14 +3,16 @@
     "SGP"
   ],
   "vps-2027-model2": [
-    "SGP",
-    "WAW"
+    "EU-SOUTH-MIL",
+    "SGP"
   ],
   "vps-2027-model3": [
     "BHS",
+    "EU-SOUTH-MIL",
     "SGP"
   ],
   "vps-2027-model4": [
+    "EU-SOUTH-MIL",
     "SGP"
   ]
 }
