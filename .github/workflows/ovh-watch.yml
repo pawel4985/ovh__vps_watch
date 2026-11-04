@@ -28,6 +28,7 @@ jobs:
           SMTP_USER: ${{ secrets.SMTP_USER }}
           SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
           MAIL_TO: ${{ secrets.MAIL_TO }}
+          OVH_WATCH_DCS: ${{ vars.OVH_WATCH_DCS }}
         run: python3 ovh_vps_watch.py
 
       - name: Zapisz stan w repozytorium
