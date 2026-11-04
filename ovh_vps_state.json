@@ -1,11 +1,10 @@
 {
   "vps-2027-model1": [
     "BHS",
-    "SBG"
+    "SBG",
+    "WAW"
   ],
   "vps-2027-model2": [],
-  "vps-2027-model3": [
-    "UK"
-  ],
+  "vps-2027-model3": [],
   "vps-2027-model4": []
 }
