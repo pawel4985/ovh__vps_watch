@@ -18,6 +18,7 @@ import json
 import os
 import smtplib
 import ssl
+import sys
 import time
 import urllib.error
 import urllib.parse
@@ -231,10 +232,12 @@ def check():
             send_email(subject, body)
             log(f"Wysłano maila: {subject}")
         except Exception as e:
-            log(f"Nie udało się wysłać maila ({e}) - spróbuję przy następnym sprawdzeniu.")
-            return  # nie zapisujemy stanu, żeby powiadomienie nie przepadło
+            log(f"Nie udało się wysłać maila: {type(e).__name__}: {e}")
+            log("Stan nie zapisany - spróbuję przy następnym sprawdzeniu.")
+            return False  # nie zapisujemy stanu, żeby powiadomienie nie przepadło
 
     save_state(new)
+    return True
 
 
 def list_mode(show_all=False):
@@ -275,7 +278,12 @@ def main():
     if args.list or args.list_all:
         list_mode(show_all=args.list_all)
     elif args.test_email:
-        send_email("Test: monitor VPS OVH", "Jeśli to czytasz, wysyłka maili działa.")
+        print(f"Łączę z {SMTP_HOST}:{SMTP_PORT} jako {SMTP_USER} ...", flush=True)
+        try:
+            send_email("Test: monitor VPS OVH", "Jeśli to czytasz, wysyłka maili działa.")
+        except Exception as e:
+            print(f"Błąd wysyłki: {type(e).__name__}: {e}")
+            sys.exit(1)
         print("Wysłano testowego maila.")
     elif args.loop:
         interval = max(60, args.loop)
@@ -290,7 +298,8 @@ def main():
         except KeyboardInterrupt:
             log("Zatrzymano.")
     else:
-        check()
+        # Kod wyjścia 1 przy nieudanej wysyłce = czerwony ✗ na GitHubie.
+        sys.exit(0 if check() is not False else 1)
 
 
 if __name__ == "__main__":
